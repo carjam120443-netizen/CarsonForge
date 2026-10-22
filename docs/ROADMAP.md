@@ -73,6 +73,14 @@ A stage is complete only when its acceptance checks pass.
 
 **Exit criteria:** the running base identifies itself as CarsonForge and can be rebuilt from documented inputs.
 
-## Later
+## Later — Networking and desktop
 
-Potential future work includes package management, automated updates, optional desktop profiles, and an installer. These remain deferred until the CLI base and ISO are reliable.
+- [ ] Add and test target networking using NetworkManager and the matching BLFS dependencies.
+- [ ] Validate DHCP, DNS, and (where supported) Wi-Fi in a clean VM.
+- [ ] Evaluate Porg 0.10 in the target environment for tracking source-installed packages.
+- [ ] Build an optional XFCE profile using the matching BLFS book after the base and networking are stable.
+- [ ] Test graphical login, session management, reboot, and recovery to a text console.
+
+See [NETWORKING / XFCE / PORG](NETWORKING-XFCE-PORG.md) for the implementation plan. These are not included in the current BusyBox preview ISO.
+
+Potential later work also includes automated updates and an installer. These remain deferred until the CLI base and ISO are reliable.
