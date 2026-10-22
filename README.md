@@ -21,7 +21,7 @@
 
 CarsonForge is an experimental, CLI-first Linux distribution based on the official [Linux From Scratch (LFS) stable systemd book](https://www.linuxfromscratch.org/lfs/view/stable-systemd/index.html).
 
-**Status: early planning / repository scaffolding.** CarsonForge is not yet a working distribution. The first milestone is a bootable x86_64 ISO, developed in verifiable stages. The initial system will be command-line first; desktop environments are out of scope until the base boots reliably.
+**Status: early planning / repository scaffolding.** CarsonForge is not yet a working distribution. The first milestone is a bootable x86_64 ISO, developed in verifiable stages. The initial system remains command-line first; networking and an optional XFCE desktop are planned after the base boots reliably.
 
 ## Principles
 
@@ -40,9 +40,11 @@ CarsonForge is an experimental, CLI-first Linux distribution based on the offici
 4. Kernel, systemd, filesystem table, GRUB, and first CLI boot.
 5. ISO assembly and clean-VM testing.
 6. CarsonForge identity: os-release, hostname, MOTD, and release metadata.
-7. Later: package management improvements and optional desktop profiles.
+7. Networking through the matching BLFS stack (planned).
+8. Optional XFCE desktop profile (planned after networking and base boot are reliable).
+9. Porg source-install tracking evaluation (planned; not yet installed).
 
-See [ROADMAP](docs/ROADMAP.md), [BUILDING](docs/BUILDING.md), and [ARCHITECTURE](docs/ARCHITECTURE.md).
+See [ROADMAP](docs/ROADMAP.md), [BUILDING](docs/BUILDING.md), [NETWORKING / XFCE / PORG](docs/NETWORKING-XFCE-PORG.md), and [ARCHITECTURE](docs/ARCHITECTURE.md).
 
 ## First steps
 
