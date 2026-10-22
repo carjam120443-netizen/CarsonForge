@@ -1,0 +1,4 @@
+# CarsonForge desktop and live-image feature flags.
+net-misc/networkmanager dhclient
+x11-misc/lightdm gtk
+xfce-base/xfce4-meta thunar
