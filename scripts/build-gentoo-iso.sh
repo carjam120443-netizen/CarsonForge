@@ -27,7 +27,7 @@ STAGE3_URL="$STAGE3_BASE/$STAGE3_REL"
 curl --fail --location --retry 3 "$STAGE3_URL" -o "$WORK_DIR/stage3.tar.xz"
 curl --fail --location --retry 3 "$STAGE3_URL.DIGESTS" -o "$WORK_DIR/stage3.DIGESTS"
 STAGE3_NAME="$(basename "$STAGE3_REL")"
-EXPECTED="$(awk -v name="$STAGE3_NAME" '$1 == "SHA512" && $2 == "HASH" && $4 == name {print $3; exit}' "$WORK_DIR/stage3.DIGESTS")"
+EXPECTED="$(awk -v name="$STAGE3_NAME" '$2 == name {print $1; exit}' "$WORK_DIR/stage3.DIGESTS")"
 ACTUAL="$(sha512sum "$WORK_DIR/stage3.tar.xz" | awk '{print $1}')"
 [[ -n "$EXPECTED" && "$EXPECTED" == "$ACTUAL" ]] || die 'Stage3 SHA-512 verification failed against Gentoo DIGESTS.'
 if [[ ! -x "$ROOTFS/bin/bash" ]]; then tar --numeric-owner -xpf "$WORK_DIR/stage3.tar.xz" -C "$ROOTFS"; fi
