@@ -7,7 +7,7 @@ OUT_DIR="${OUT_DIR:-$ROOT_DIR/out}"
 ROOTFS="$WORK_DIR/rootfs"
 ISO_ROOT="$WORK_DIR/iso"
 BOOT="$ISO_ROOT/boot"
-STAGE3_BASE="https://distfiles.gentoo.org/releases/amd64/autobuilds"
+STAGE3_BASE="https://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64-systemd"
 PACKAGES_FILE="$ROOT_DIR/packages/gentoo-packages.txt"
 die() { printf 'error: %s\n' "$*" >&2; exit 1; }
 need() { command -v "$1" >/dev/null 2>&1 || die "Missing host command: $1"; }
