@@ -14,7 +14,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Validate remaining shell syntax
-        run: bash -n scripts/build-base-iso.sh
+      - name: Validate shell syntax
+        run: |
+          bash -n scripts/build-base-iso.sh
+          bash -n scripts/build-gentoo-iso.sh
       - name: Check shell script whitespace
         run: git diff --check
