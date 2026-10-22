@@ -1,0 +1,34 @@
+# Local build outputs
+/build/
+/sources/
+/logs/
+/artifacts/
+/output/
+/work/
+/mnt/lfs/
+/target-rootfs/
+
+# VM images and snapshots
+*.vdi
+*.vhd
+*.vhdx
+*.vmdk
+*.qcow2
+*.ova
+*.iso
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.token
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
