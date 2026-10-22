@@ -1,0 +1,55 @@
+name: Build CarsonForge Gentoo XFCE ISO (experimental)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/build-gentoo-iso.yml"
+      - "scripts/build-gentoo-iso.sh"
+      - "packages/gentoo-packages.txt"
+      - "config/portage/**"
+      - "rootfs/etc/portage/**"
+      - "rootfs/etc/os-release"
+  pull_request:
+    paths:
+      - ".github/workflows/build-gentoo-iso.yml"
+      - "scripts/build-gentoo-iso.sh"
+      - "packages/gentoo-packages.txt"
+      - "config/portage/**"
+      - "rootfs/etc/portage/**"
+      - "rootfs/etc/os-release"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gentoo-iso-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-gentoo-iso:
+    name: Bootstrap Gentoo and build XFCE ISO
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out CarsonForge
+        uses: actions/checkout@v4
+      - name: Install host image tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes curl xz-utils squashfs-tools xorriso grub-common grub-pc-bin mtools file
+      - name: Build Gentoo root and ISO
+        shell: bash
+        run: |
+          chmod +x scripts/build-gentoo-iso.sh
+          sudo scripts/build-gentoo-iso.sh
+      - name: Upload experimental Gentoo ISO and checksum
+        uses: actions/upload-artifact@v4
+        with:
+          name: carsonforge-gentoo-xfce-x86_64-experimental
+          path: |
+            out/carsonforge-gentoo-x86_64.iso
+            out/carsonforge-gentoo-x86_64.iso.sha256
+          if-no-files-found: error
+          retention-days: 14
