@@ -2,47 +2,49 @@
 
 ## Status
 
-This document describes the intended workflow. The repository does not yet contain a complete LFS build engine or ISO generator. The official book is the authority for package commands.
+CarsonForge is in early development. The repository does not yet provide a complete,
+reproducible end-to-end LFS toolchain build. This guide covers the starter rootfs
+configuration and packaging already provided.
 
-## 1. Select and pin the book
+## Base root filesystem
 
-Use the [official stable systemd LFS book](https://www.linuxfromscratch.org/lfs/view/stable-systemd/index.html). Before each build series:
+The `rootfs/` directory contains configuration seeds, not a complete operating system.
+Follow the official [Linux From Scratch systemd book](https://www.linuxfromscratch.org/lfs/view/systemd/)
+and the project roadmap to build the toolchain and target userland. Assemble those outputs
+into a dedicated target root and layer in the appropriate files from `rootfs/`.
+Never copy these files over a live host's root filesystem.
 
-1. Record the book version and publication date.
-2. Check the [official errata](https://www.linuxfromscratch.org/lfs/errata/stable-systemd/).
-3. Use package versions and patches listed for that exact edition.
-4. Do not mix instructions from different editions silently.
+## Package a base ISO
 
-## 2. Isolated Linux VM
+On an x86_64 Linux build host, install `grub-mkrescue` and `xorriso` using your host
+distribution's package manager. Prepare these inputs:
 
-Build inside a dedicated Linux VM, not directly on the Windows host or the host root filesystem. Use a separate target virtual disk for the LFS filesystem and take VM snapshots before major stages.
+- `build/boot/vmlinuz` — kernel compiled for CarsonForge
+- `build/boot/initramfs.img` — initramfs with a working `/init` and the userspace
+  needed to start the system
+- `build/rootfs/etc/os-release` — CarsonForge metadata from `rootfs/etc/os-release`
+  copied into the assembled target root
 
-Before formatting or mounting anything, identify the target disk and confirm its size, filesystem, and mount point. Never assume an example device name identifies the correct disk.
+Then run:
 
-## 3. Host requirements
+```bash
+chmod +x scripts/build-base-iso.sh
+scripts/build-base-iso.sh
+```
 
-The selected LFS book's host requirements are authoritative. Check compiler, linker, shell, and required utility versions using the book's own procedure. The repository script scripts/check-host.sh is only an initial inventory; a successful result does not prove LFS requirements are satisfied.
+The ISO is written to `out/carsonforge-base-x86_64.iso`. Customize paths with
+`KERNEL_PATH`, `INITRAMFS_PATH`, `ROOTFS_DIR`, `OUTPUT_DIR`, or `ISO_PATH`.
 
-## 4. Sources and logs
+**Important:** the script packages existing artifacts; it does not compile the kernel,
+create the initramfs, or build the LFS userland. GRUB displaying a menu does not prove
+the live system works. The initramfs must contain a valid `/init` and everything needed
+to start the intended userspace. Test the ISO in a disposable VM before attempting
+hardware installation.
 
-Keep source downloads, build logs, and temporary build data outside the target root filesystem. Record the LFS edition, host distribution and tool versions, archive names and checksums, build timestamps and exit status, deviations, and the last completed chapter/package.
+## Current stages
 
-Read each book section before executing it. Do not run unreviewed commands as root.
-
-## 5. Follow the book in order
-
-Broadly, LFS proceeds through host preparation, source preparation, cross-toolchain, temporary tools, chroot, base packages, system configuration, kernel, filesystem table, and GRUB. Use the exact chapter order and commands from the selected edition.
-
-Future scripts should automate narrow, well-understood stages. Each should fail on errors, log output, validate inputs, and avoid destructive actions unless a carefully validated target path is explicitly supplied. No script should format disks or overwrite bootloaders based on guessed device names.
-
-## 6. First-boot validation
-
-Use a clean target VM and confirm GRUB loads the intended kernel, the kernel mounts the intended root filesystem, systemd reaches a text login, the filesystem table matches the VM layout, a normal user can log in, and no critical boot failures remain unresolved.
-
-## 7. ISO validation
-
-Design the ISO workflow after the installed base boots. Decide whether the first ISO is live, installer-based, or a bootable installation image. Test in a new VM with no existing disk state and publish a checksum with every image.
-
-## 8. Reporting failures
-
-Open an issue with the LFS edition, chapter/package, host details, exact command (excluding secrets), exit status, relevant log excerpt, and troubleshooting already attempted. Never upload private keys, access tokens, or personal data.
+1. Run `scripts/check-host.sh` and review its requirements.
+2. Build the LFS cross-toolchain and target userland according to the LFS systemd book.
+3. Assemble the target root and apply the configuration seeds from `rootfs/`.
+4. Build and test a compatible kernel and initramfs for the chosen boot model.
+5. Package and test the ISO with `scripts/build-base-iso.sh`.
