@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Linux-From-Scratch_logo.png" alt="Linux From Scratch logo" width="192" height="75" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Linux-From-Scratch_logo.png" alt="Linux From Scratch logo" width="192" height="75" />
 
 <p><em>Built on the Linux From Scratch project — with credit to its contributors.</em></p>
 
