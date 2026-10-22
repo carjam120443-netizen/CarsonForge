@@ -21,7 +21,7 @@
 
 CarsonForge uses Gentoo and Portage as its foundation. The goal is a practical, source-first desktop system that builds most packages through Portage while using Gentoo's existing ecosystem instead of maintaining an entire Linux userspace from scratch.
 
-**Status: early development.** The current GitHub Actions ISO is a minimal BusyBox developer preview, not yet the Gentoo-based desktop system. The target first release is an x86_64 live ISO that boots to XFCE, includes working NetworkManager integration, and ships with Porg.
+**Status: early development.** An experimental Gentoo stage3 → Portage → XFCE ISO build pipeline is now in the repository, alongside the older BusyBox developer preview. The Gentoo workflow is an initial scaffold and has not yet been confirmed to build or boot successfully. The target is an x86_64 live ISO with XFCE, NetworkManager, and Porg.
 
 ## Goals
 
@@ -55,11 +55,12 @@ See [Architecture](docs/ARCHITECTURE.md), [Building](docs/BUILDING.md), [Roadmap
 - `scripts/` — reviewed build and validation helpers.
 - `.github/workflows/` — repository checks and ISO build automation.
 
-## Current preview
+## Build workflows
 
-The existing `carsonforge-base-x86_64-iso` artifact is retained temporarily as a developer preview while the Gentoo build pipeline is designed. It boots into a BusyBox shell and does **not** contain Gentoo, XFCE, NetworkManager, or Porg.
+- **Build CarsonForge Gentoo XFCE ISO (experimental):** manually run `.github/workflows/build-gentoo-iso.yml` from the Actions tab, or let it run when its build inputs change. It bootstraps Gentoo stage3, installs the initial package set through Portage, and attempts to assemble a squashfs live ISO. The first run may expose package, disk, runner-time, or live-boot issues; no successful build or VM boot is claimed yet.
+- **Build CarsonForge legacy BusyBox preview ISO:** the older workflow remains available during the transition. Its `carsonforge-base-x86_64-iso` artifact boots to a BusyBox shell and does **not** contain Gentoo, XFCE, NetworkManager, or Porg.
 
-Do not treat this preview as the first CarsonForge desktop release. The Gentoo ISO should replace it only after the new image is built and its boot tests pass.
+Treat the new image as experimental until a workflow run succeeds and the ISO has been tested in a disposable VM.
 
 ## Upstream and branding
 
