@@ -65,8 +65,8 @@ KVER="$(basename "$KERNEL" | sed -E 's/^(vmlinuz-|kernel-)//')"
 chroot "$ROOTFS" /bin/bash -c "dracut --force --no-hostonly --kver '$KVER' --add 'dmsquash-live' /boot/carsonforge-initramfs.img"
 install -m 0644 "$KERNEL" "$BOOT/vmlinuz"
 install -m 0644 "$ROOTFS/boot/carsonforge-initramfs.img" "$BOOT/initramfs.img"
-mkdir -p "$ISO_ROOT/live"
-mksquashfs "$ROOTFS" "$ISO_ROOT/live/rootfs.squashfs" -comp xz -b 1M -noappend -e proc sys dev run tmp
+mkdir -p "$ISO_ROOT/LiveOS"
+mksquashfs "$ROOTFS" "$ISO_ROOT/LiveOS/squashfs.img" -comp xz -b 1M -noappend -e proc sys dev run tmp
 cat > "$BOOT/grub/grub.cfg" <<'GRUB'
 set timeout=5
 set default=0
@@ -76,7 +76,7 @@ menuentry 'CarsonForge Gentoo XFCE (experimental)' {
 }
 GRUB
 ISO="$OUT_DIR/carsonforge-gentoo-x86_64.iso"
-grub-mkrescue -o "$ISO" "$ISO_ROOT"
+grub-mkrescue -V CARSONFORGE -o "$ISO" "$ISO_ROOT"
 [[ -s "$ISO" ]] || die 'ISO output is missing or empty.'
 sha256sum "$ISO" | tee "$ISO.sha256"
 file "$ISO"; ls -lh "$ISO"
