@@ -44,7 +44,7 @@ CarsonForge is an experimental, CLI-first Linux distribution based on the offici
 8. Optional XFCE desktop profile (planned after networking and base boot are reliable).
 9. Porg source-install tracking evaluation (planned; not yet installed).
 
-See [ROADMAP](docs/ROADMAP.md), [BUILDING](docs/BUILDING.md), [NETWORKING / XFCE / PORG](docs/NETWORKING-XFCE-PORG.md), and [ARCHITECTURE](docs/ARCHITECTURE.md).
+See [ROADMAP](docs/ROADMAP.md), [BUILDING](docs/BUILDING.md), [NETWORKING / XFCE / PORG](docs/NETWORKING-XFCE-PORG.md), and [ARCHITECTURE](docs/ARCHITECTURE.md). Networking and Porg helpers are available in `scripts/enable-networking.sh` and `scripts/build-porg.sh`; they require a real assembled LFS target and do not add these components to the current BusyBox preview ISO.
 
 ## First steps
 
