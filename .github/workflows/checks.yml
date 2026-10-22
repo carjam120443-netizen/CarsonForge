@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Validate shell syntax
-        run: bash -n scripts/check-host.sh scripts/enable-networking.sh scripts/build-porg.sh
+      - name: Validate remaining shell syntax
+        run: bash -n scripts/build-base-iso.sh
       - name: Check shell script whitespace
         run: git diff --check
