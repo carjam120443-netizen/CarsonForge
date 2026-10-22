@@ -1,3 +1,20 @@
+<div align="center">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Linux-From-Scratch_logo.png" alt="Linux From Scratch logo" width="192" height="75" />
+
+<p><em>Built on the Linux From Scratch project — with credit to its contributors.</em></p>
+
+<img src="assets/carsonforge-logo.svg" alt="CarsonForge — built from source" width="600" />
+
+<p>
+  <img src="https://img.shields.io/badge/status-early%20development-orange" alt="Project status: early development" />
+  <img src="https://img.shields.io/badge/architecture-x86__64-blue" alt="Target architecture: x86_64" />
+  <img src="https://img.shields.io/badge/base-LFS%20systemd-informational" alt="Base: Linux From Scratch systemd" />
+  <img src="https://img.shields.io/badge/interface-CLI--first-lightgrey" alt="CLI-first" />
+</p>
+
+</div>
+
 # CarsonForge
 
 **A Linux distribution built from source.**
@@ -31,10 +48,12 @@ See [ROADMAP](docs/ROADMAP.md), [BUILDING](docs/BUILDING.md), and [ARCHITECTURE]
 
 Clone this repository and run the informational host inventory:
 
-    git clone https://github.com/carjam120443-netizen/CarsonForge.git
-    cd CarsonForge
-    chmod +x scripts/check-host.sh
-    ./scripts/check-host.sh
+```bash
+git clone https://github.com/carjam120443-netizen/CarsonForge.git
+cd CarsonForge
+chmod +x scripts/check-host.sh
+./scripts/check-host.sh
+```
 
 This inventory is preliminary only; it does not replace the official LFS host-requirements checks. A full build and ISO generator do not exist yet. Read the [official LFS book](https://www.linuxfromscratch.org/lfs/view/stable-systemd/index.html) before preparing a build VM.
 
@@ -44,9 +63,10 @@ This inventory is preliminary only; it does not replace the official LFS host-re
 - [LFS errata](https://www.linuxfromscratch.org/lfs/errata/stable-systemd/)
 - [Beyond Linux From Scratch](https://www.linuxfromscratch.org/blfs/)
 - [LFS FAQ](https://www.linuxfromscratch.org/faq/)
+- [LFS logo source and licensing information](https://commons.wikimedia.org/wiki/File:Linux-From-Scratch_logo.png)
 
 ## License and provenance
 
-The repository license applies to eligible CarsonForge-authored files only. LFS instructions, package sources, patches, and assets retain their own licenses. See the LFS book's license appendix and each upstream project's notices.
+The repository license applies to eligible CarsonForge-authored files only. LFS instructions, package sources, patches, and assets retain their own licenses. The LFS logo is credited to its creators and is sourced from Wikimedia Commons; see the linked file page for licensing and attribution details. See the LFS book's license appendix and each upstream project's notices.
 
 Issues should include the book edition, chapter/package, host details, exact command (without secrets), exit status, and relevant log excerpt.
