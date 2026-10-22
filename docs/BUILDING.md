@@ -2,7 +2,7 @@
 
 ## Status
 
-CarsonForge is transitioning from a minimal BusyBox developer preview to a Gentoo-based live desktop. A complete Gentoo bootstrap, XFCE image, and automated boot test are not implemented yet.
+CarsonForge now has an initial experimental Gentoo stage3 → Portage → XFCE ISO pipeline in `scripts/build-gentoo-iso.sh` and `.github/workflows/build-gentoo-iso.yml`. It has been committed but has not yet been confirmed by a successful Actions run or VM boot. Expect to iterate on package availability, live-initramfs configuration, runner disk usage, and build duration.
 
 ## Build strategy
 
@@ -34,9 +34,9 @@ Use Gentoo's official [AMD64 Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD
 
 ## GitHub Actions
 
-Keep one main workflow responsible for bootstrap, package builds, ISO creation, smoke tests, and artifact upload. Cache Portage distfiles and compiled package artifacts to reduce repeated work. The hosted runner's time, disk, and virtualization limits must be measured; if a complete source build exceeds them, document the limitation rather than publishing the old BusyBox image as if it were the Gentoo release.
+Run **Build CarsonForge Gentoo XFCE ISO (experimental)** from the Actions tab to attempt the full bootstrap and ISO assembly. It downloads the current systemd amd64 stage3, checks its SHA-512 digest against Gentoo's DIGESTS file, configures the isolated target root, asks Portage to install the package set in `packages/gentoo-packages.txt`, and attempts to create a squashfs live ISO. The workflow uploads the ISO and SHA-256 file only if all steps complete.
 
-Repository checks should remain quick and should not download or build the entire operating system.
+This is an initial end-to-end attempt, not a validated release pipeline. Review the actual workflow logs after the first run. Hosted-runner disk and time limits may be insufficient for a large source build; the current configuration prefers Gentoo binary packages when available, so it does not guarantee every package is compiled from source. Repository checks stay fast and only syntax-check the scripts.
 
 ## Legacy BusyBox preview
 
