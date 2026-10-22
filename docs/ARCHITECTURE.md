@@ -2,32 +2,42 @@
 
 ## Initial target
 
-- Architecture: x86_64 (planned; not yet validated)
-- Init/service manager: systemd, following the selected LFS systemd book
-- Interface: CLI-first
-- Development target: isolated virtual machines
-- First deliverable: bootable ISO, after a verified installed base system
+- **Architecture:** x86_64 / Gentoo `amd64`
+- **Base:** Gentoo stage3
+- **Package management:** Portage (`emerge`)
+- **Init and service management:** systemd profile
+- **Desktop:** XFCE
+- **Networking:** NetworkManager
+- **Source-install tracking:** Porg, built from source
+- **First target image:** live desktop ISO
+- **Test environment:** disposable virtual machines
 
-## Layers
+These are design targets, not claims that the current BusyBox preview already contains them.
 
-1. **Upstream LFS base:** toolchain, C library, core utilities, shell, system utilities, kernel, and system configuration built according to the pinned book.
-2. **CarsonForge configuration:** project identity and documented defaults layered on the completed LFS system.
-3. **Image assembly:** a separately tested process packaging a known-good root filesystem into a bootable ISO.
-4. **Future components:** package-management strategy, installer, and optional desktop profiles. These are not assumed to exist in the initial CLI release.
+## Build layers
+
+1. **Bootstrap:** download a pinned Gentoo stage3 and verify its published integrity data.
+2. **Portage configuration:** select the target profile, compiler settings, USE flags, and package set.
+3. **Target root:** build and install packages into an isolated Gentoo root filesystem.
+4. **CarsonForge overlay:** add project identity, defaults, custom artwork, and reviewed startup configuration.
+5. **Live image:** assemble kernel, bootloader, root filesystem, and live-session behavior into an ISO.
+6. **Validation:** check required files and services, inspect the ISO, and boot it in a clean VM where runner capabilities permit.
 
 ## Repository responsibilities
 
-- docs/ describes build procedure, architecture, and acceptance criteria.
-- scripts/ contains host checks and later reviewed stage-specific automation.
-- config/ holds CarsonForge-owned configuration templates.
-- rootfs/ holds small project-owned overlay files, not a copied built root filesystem.
-- packages/ will document future package definitions and provenance.
-- .github/workflows/ performs repository checks; it should not attempt a full LFS build until runner resources and reproducibility are designed.
+- `docs/` describes architecture, build steps, and acceptance criteria.
+- `scripts/` contains focused build and validation helpers.
+- `config/` contains CarsonForge-owned configuration templates.
+- `rootfs/` contains small project-owned overlay files, not a copied full system.
+- `packages/` records future package definitions and provenance.
+- `.github/workflows/` runs repository checks and the main ISO build.
+
+The current BusyBox ISO builder is transitional and should not be mistaken for the Gentoo build pipeline.
 
 ## Reproducibility
 
-Record the book edition, package inputs, patches, configuration, and build environment. Prefer explicit versions and verified checksums. Preserve logs. Do not claim bit-for-bit reproducibility until independently verified.
+Pin the stage3 snapshot and record the Gentoo profile, Portage configuration, package inputs, USE flags, and relevant environment. Cache downloaded source archives and build outputs when safe. Preserve logs and generate a checksum for each ISO. Do not claim bit-for-bit reproducibility until independently verified.
 
 ## Licensing and provenance
 
-LFS instructions, packages, patches, and assets may have different licenses. The CarsonForge license does not override upstream terms. Preserve required notices and source links for redistributed materials.
+Gentoo artwork, Gentoo packages, patches, and third-party assets can have different licenses and usage conditions. The CarsonForge license does not override upstream terms. Preserve required notices and make it clear that CarsonForge is an independent project, not an official Gentoo release.
