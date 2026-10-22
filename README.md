@@ -4,7 +4,7 @@
 
 <p><em>Built on the Linux From Scratch project — with credit to its contributors.</em></p>
 
-<img src="https://raw.githubusercontent.com/carjam120443-netizen/CarsonForge/main/assets/carsonforge-logo.svg" alt="CarsonForge — built from source" width="600" />
+<img src="https://raw.githubusercontent.com/carjam120443-netizen/CarsonForge/main/assets/carsonforge.png" alt="CarsonForge — built from source" width="600" />
 
 <p>
   <img src="https://img.shields.io/badge/status-early%20development-orange" alt="Project status: early development" />
