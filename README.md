@@ -1,74 +1,79 @@
 <div align="center">
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Linux-From-Scratch_logo.png" alt="Linux From Scratch logo" width="192" height="75" />
+<img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gentoo_Linux.svg" alt="Official Gentoo Linux logo" width="150" />
 
-<p><em>Built on the Linux From Scratch project — with credit to its contributors.</em></p>
+<p><em>Gentoo-based · Portage-powered · Source-built</em></p>
 
-<img src="https://raw.githubusercontent.com/carjam120443-netizen/CarsonForge/main/assets/carsonforge.png" alt="CarsonForge — built from source" width="420" />
+<img src="https://raw.githubusercontent.com/carjam120443-netizen/CarsonForge/main/assets/carsonforge.png" alt="CarsonForge custom logo" width="420" />
 
 <p>
   <img src="https://img.shields.io/badge/status-early%20development-orange" alt="Project status: early development" />
-  <img src="https://img.shields.io/badge/architecture-x86__64-blue" alt="Target architecture: x86_64" />
-  <img src="https://img.shields.io/badge/base-LFS%20systemd-informational" alt="Base: Linux From Scratch systemd" />
-  <img src="https://img.shields.io/badge/interface-CLI--first-lightgrey" alt="CLI-first" />
+  <img src="https://img.shields.io/badge/architecture-amd64-blue" alt="Target architecture: amd64" />
+  <img src="https://img.shields.io/badge/base-Gentoo-informational" alt="Base: Gentoo Linux" />
+  <img src="https://img.shields.io/badge/desktop-XFCE-4a6b8a" alt="Planned desktop: XFCE" />
 </p>
 
 </div>
 
 # CarsonForge
 
-**A Linux distribution built from source.**
+**A Gentoo-based Linux distribution focused on source-built software.**
 
-CarsonForge is an experimental, CLI-first Linux distribution based on the official [Linux From Scratch (LFS) stable systemd book](https://www.linuxfromscratch.org/lfs/view/stable-systemd/index.html).
+CarsonForge uses Gentoo and Portage as its foundation. The goal is a practical, source-first desktop system that builds most packages through Portage while using Gentoo's existing ecosystem instead of maintaining an entire Linux userspace from scratch.
 
-**Status: early planning / repository scaffolding.** CarsonForge is not yet a working distribution. The first milestone is a bootable x86_64 ISO, developed in verifiable stages. The initial system remains command-line first; networking and an optional XFCE desktop are planned after the base boots reliably.
+**Status: early development.** The current GitHub Actions ISO is a minimal BusyBox developer preview, not yet the Gentoo-based desktop system. The target first release is an x86_64 live ISO that boots to XFCE, includes working NetworkManager integration, and ships with Porg.
 
-## Principles
+## Goals
 
-- Follow one pinned LFS book edition and its official errata.
-- Keep builds logged, repeatable, and resumable where practical.
-- Verify source checksums and signatures when upstream provides them.
-- Keep the host separate from the target root filesystem.
-- Test in disposable virtual machines before considering physical hardware.
-- Distinguish CarsonForge-authored tooling from upstream LFS instructions and software.
+- Use a pinned Gentoo stage3 and documented Portage configuration.
+- Build most system packages from source through Portage.
+- Provide an XFCE live desktop with NetworkManager enabled.
+- Build Porg from source and include it in the target system.
+- Keep the build repeatable, logged, and cache-friendly.
+- Test the generated ISO in a clean virtual machine before calling it usable.
+- Keep CarsonForge's own branding and tools distinct from upstream Gentoo software.
 
 ## Roadmap
 
-1. Repository foundation and host checks.
-2. Dedicated Linux build VM and isolated target disk.
-3. LFS cross-toolchain, temporary tools, chroot, and base system.
-4. Kernel, systemd, filesystem table, GRUB, and first CLI boot.
-5. ISO assembly and clean-VM testing.
-6. CarsonForge identity: os-release, hostname, MOTD, and release metadata.
-7. Networking through the matching BLFS stack (planned).
-8. Optional XFCE desktop profile (planned after networking and base boot are reliable).
-9. Porg source-install tracking evaluation (planned; not yet installed).
+1. Replace the legacy BusyBox preview build with a Gentoo stage3 bootstrap.
+2. Build a minimal systemd-based Gentoo root filesystem through Portage.
+3. Add NetworkManager, DHCP support, and suitable firmware where redistribution is permitted.
+4. Build Porg from source and verify it works in the target root.
+5. Build the Xorg/graphics stack and XFCE desktop profile.
+6. Create a live ISO with a bootloader, live-session startup, and writable runtime state.
+7. Add ISO integrity checks and automated VM boot smoke tests where runner capabilities allow.
 
-See [ROADMAP](docs/ROADMAP.md), [BUILDING](docs/BUILDING.md), [NETWORKING / XFCE / PORG](docs/NETWORKING-XFCE-PORG.md), and [ARCHITECTURE](docs/ARCHITECTURE.md). Networking and Porg helpers are available in `scripts/enable-networking.sh` and `scripts/build-porg.sh`; they require a real assembled LFS target and do not add these components to the current BusyBox preview ISO.
+See [Architecture](docs/ARCHITECTURE.md), [Building](docs/BUILDING.md), [Roadmap](docs/ROADMAP.md), and [Desktop, networking, and Porg](docs/NETWORKING-XFCE-PORG.md).
 
-## First steps
+## Repository layout
 
-Clone this repository and run the informational host inventory:
+- `assets/` — CarsonForge-authored branding.
+- `config/` — project-owned configuration templates.
+- `docs/` — architecture, build plan, and acceptance criteria.
+- `packages/` — planned package and provenance notes.
+- `rootfs/` — small project-owned overlay files; not a complete operating system.
+- `scripts/` — reviewed build and validation helpers.
+- `.github/workflows/` — repository checks and ISO build automation.
 
-```bash
-git clone https://github.com/carjam120443-netizen/CarsonForge.git
-cd CarsonForge
-chmod +x scripts/check-host.sh
-./scripts/check-host.sh
-```
+## Current preview
 
-This inventory is preliminary only; it does not replace the official LFS host-requirements checks. A full build and ISO generator do not exist yet. Read the [official LFS book](https://www.linuxfromscratch.org/lfs/view/stable-systemd/index.html) before preparing a build VM.
+The existing `carsonforge-base-x86_64-iso` artifact is retained temporarily as a developer preview while the Gentoo build pipeline is designed. It boots into a BusyBox shell and does **not** contain Gentoo, XFCE, NetworkManager, or Porg.
 
-## Upstream references
+Do not treat this preview as the first CarsonForge desktop release. The Gentoo ISO should replace it only after the new image is built and its boot tests pass.
 
-- [LFS stable systemd book](https://www.linuxfromscratch.org/lfs/view/stable-systemd/index.html)
-- [LFS errata](https://www.linuxfromscratch.org/lfs/errata/stable-systemd/)
-- [Beyond Linux From Scratch](https://www.linuxfromscratch.org/blfs/)
-- [LFS FAQ](https://www.linuxfromscratch.org/faq/)
-- [LFS logo source and licensing information](https://commons.wikimedia.org/wiki/File:Linux-From-Scratch_logo.png)
+## Upstream and branding
+
+- [Gentoo Linux](https://www.gentoo.org/)
+- [Gentoo Handbook](https://wiki.gentoo.org/wiki/Handbook:AMD64)
+- [Gentoo Portage documentation](https://wiki.gentoo.org/wiki/Portage)
+- [Official Gentoo artwork](https://www.gentoo.org/inside-gentoo/artwork/gentoo-logo.html)
+- [Gentoo name and logo usage guidelines](https://www.gentoo.org/inside-gentoo/foundation/name-logo-guidelines.html)
+- [Porg project](https://porg.sourceforge.net/)
+
+The Gentoo logo is upstream artwork and remains subject to Gentoo's attribution, license, and name/logo guidelines. The CarsonForge logo and branding remain separate project assets. CarsonForge is an independent project and is not an official Gentoo release.
 
 ## License and provenance
 
-The repository license applies to eligible CarsonForge-authored files only. LFS instructions, package sources, patches, and assets retain their own licenses. The LFS logo is credited to its creators and is sourced from Wikimedia Commons; see the linked file page for licensing and attribution details. See the LFS book's license appendix and each upstream project's notices.
+The repository license applies only to eligible CarsonForge-authored files. Gentoo artwork, package sources, patches, and third-party assets retain their own license and usage terms. Preserve upstream notices and document source provenance when redistributing them.
 
-Issues should include the book edition, chapter/package, host details, exact command (without secrets), exit status, and relevant log excerpt.
+Issues should include the commit or workflow run, the exact failed step, exit status, and a relevant log excerpt. Do not include passwords, tokens, or other secrets.
