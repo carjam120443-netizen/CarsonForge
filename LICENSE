@@ -20,7 +20,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-This license applies only to CarsonForge-authored files that are eligible for
-licensing under it. It does not relicense Linux From Scratch materials,
-third-party packages, patches, or other upstream content; their own license
-terms continue to apply.
+This license applies only to eligible CarsonForge-authored files. It does not
+relicense Gentoo artwork, upstream packages, patches, or third-party content;
+their own licenses, attribution requirements, and usage terms continue to apply.
