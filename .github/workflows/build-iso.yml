@@ -1,4 +1,4 @@
-name: Build CarsonForge base ISO
+name: Build CarsonForge legacy BusyBox preview ISO
 
 on:
   push:
@@ -20,8 +20,8 @@ permissions:
   contents: read
 
 jobs:
-  build-base-iso:
-    name: Build bootable base ISO
+  build-preview-iso:
+    name: Build BusyBox developer preview ISO
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
@@ -39,8 +39,8 @@ jobs:
           mkdir -p build/boot build/rootfs/etc
           cp rootfs/etc/os-release build/rootfs/etc/os-release
 
-          # Use the hosted runner's installed kernel. This produces a real bootable
-          # developer-preview ISO, not yet a full LFS-built CarsonForge distribution.
+          # This transitional preview uses the hosted runner's kernel. It is not
+          # the planned Gentoo-built CarsonForge system.
           kernel="$(find /boot -maxdepth 1 -type f -name 'vmlinuz-*' | sort -V | tail -n 1)"
           if [[ -z "$kernel" ]]; then
             echo "::error::No installed kernel image found under /boot."
@@ -65,11 +65,11 @@ jobs:
           mount -t sysfs sysfs /sys
           mount -t devpts devpts /dev/pts 2>/dev/null || true
           echo
-          echo "  CarsonForge Linux — base developer preview"
+          echo "  CarsonForge Linux — BusyBox developer preview"
           echo "  Kernel: $(uname -r)"
           echo
-          echo "This ISO boots a minimal BusyBox shell."
-          echo "It is not yet the complete LFS-built CarsonForge userspace."
+          echo "This transitional ISO boots a minimal BusyBox shell."
+          echo "It does not yet contain the Gentoo-based CarsonForge system."
           echo
           exec /bin/sh
           INIT
@@ -80,7 +80,7 @@ jobs:
           test -s build/boot/vmlinuz
           test -s build/boot/initramfs.img
 
-      - name: Build ISO
+      - name: Package preview ISO
         run: |
           chmod +x scripts/build-base-iso.sh
           scripts/build-base-iso.sh
@@ -91,7 +91,7 @@ jobs:
           file out/carsonforge-base-x86_64.iso
           ls -lh out/carsonforge-base-x86_64.iso
 
-      - name: Upload ISO artifact
+      - name: Upload preview ISO artifact
         uses: actions/upload-artifact@v4
         with:
           name: carsonforge-base-x86_64-iso
