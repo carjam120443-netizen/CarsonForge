@@ -1,0 +1,12 @@
+NAME="CarsonForge"
+PRETTY_NAME="CarsonForge Linux"
+ID=carsonforge
+ID_LIKE=linux
+VERSION="0.1.0-dev"
+VERSION_ID="0.1.0"
+VERSION_CODENAME=forge
+BUILD_ID=development
+HOME_URL="https://github.com/carjam120443-netizen/CarsonForge"
+DOCUMENTATION_URL="https://github.com/carjam120443-netizen/CarsonForge/tree/main/docs"
+BUG_REPORT_URL="https://github.com/carjam120443-netizen/CarsonForge/issues"
+ANSI_COLOR="38;2;70;150;255"
