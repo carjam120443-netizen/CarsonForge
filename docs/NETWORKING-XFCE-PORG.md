@@ -14,7 +14,7 @@ Acceptance checks:
 - [ ] DNS resolution and outbound connectivity work after reboot.
 - [ ] Networking is tested in a clean VM; host networking is not mistaken for target networking.
 
-Do not copy the GitHub Actions runner's network configuration into the target root. Hardware firmware and wireless support depend on the chosen adapter.
+Do not copy the GitHub Actions runner's network configuration into the target root. Hardware firmware and wireless support depend on the chosen adapter. Once NetworkManager and its matching BLFS dependencies have been built and installed in an assembled target root, run `sudo scripts/enable-networking.sh /path/to/target-root` from the repository. The helper refuses to proceed unless the NetworkManager systemd unit is present; it enables the service and creates a minimal keyfile-plugin configuration only when one does not already exist. It does not download or build NetworkManager.
 
 ## XFCE desktop (BLFS target)
 
@@ -35,7 +35,7 @@ XFCE is not a package that can simply be copied into the current BusyBox initram
 
 [Porg](https://porg.sourceforge.net/) records files installed by source builds and can help inventory/uninstall those packages. The upstream SourceForge listing currently offers **porg 0.10**; it is an older release, so test it against CarsonForge's selected compiler and libc before relying on it.
 
-Build and install Porg into the **target root**, not the build host. Use the source archive from the upstream project, verify it with a trusted checksum/signature if available, inspect its configure options, then build it in the LFS/BLFS environment. Initialize and protect its package log directory (normally `/var/lib/porg`) and test logging on a disposable package before using it for system components.
+Build and install Porg inside CarsonForge's LFS build/chroot environment, not on the Ubuntu Actions runner. Download the source archive from the upstream project and verify its checksum/signature when upstream provides one. Extract it, inspect its configure options, then run `sudo scripts/build-porg.sh /path/to/extracted-porg-source` from within the target build environment (or copy the script into that environment). The helper configures, builds, installs, and creates `/var/lib/porg`; because Porg cannot track its own first installation, test logging on a disposable package before using it for system components. This helper has not yet been run against the target's chosen compiler/libc.
 
 Example usage after Porg is built and configured in the target:
 ```sh
@@ -49,9 +49,9 @@ The exact options and behavior should be checked against the installed Porg manu
 ## Suggested order
 
 1. Finish and test the LFS base and kernel.
-2. Add NetworkManager and verify wired networking.
+2. Build/install NetworkManager and its matching BLFS dependencies, then run `scripts/enable-networking.sh` against the assembled target root and verify wired networking.
 3. Add firmware and test Wi-Fi where applicable.
-4. Build Porg and validate its install log on a disposable test package.
+4. Build Porg with `scripts/build-porg.sh` and validate its install log on a disposable test package.
 5. Build the Xorg/graphics stack and XFCE using the matching BLFS book.
 6. Produce a new ISO from the assembled target root and test it in a clean VM.
 
