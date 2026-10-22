@@ -8,7 +8,7 @@
 
 <p>
   <img src="https://img.shields.io/badge/status-early%20development-orange" alt="Project status: early development" />
-  <img src="https://img.shields.io/badge/architecture-amd64-blue" alt="Target architecture: amd64" />
+  <img src="https://img.shields.io/badge/target-x86--64-blue?style=flat-square" alt="Target architecture: x86-64 (amd64)" />
   <img src="https://img.shields.io/badge/base-Gentoo-informational" alt="Base: Gentoo Linux" />
   <img src="https://img.shields.io/badge/desktop-XFCE-4a6b8a" alt="Planned desktop: XFCE" />
 </p>
