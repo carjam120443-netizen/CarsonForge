@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">CarsonForge</title>
+  <desc id="desc">A geometric penguin and anvil emblem in charcoal, silver, electric blue, and forge-orange.</desc>
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e5edf7"/><stop offset="1" stop-color="#77869a"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#19d3ff"/><stop offset="1" stop-color="#2474ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="420" rx="28" fill="#10151e"/>
+  <g transform="translate(72 45)">
+    <path d="M170 18 265 55 315 125 300 206 350 246 292 277 70 277 18 244 65 206 48 124 91 55Z" fill="#252e3a" stroke="#46556a" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M170 52 235 78 270 130 254 187 282 221 243 239 111 239 82 220 113 186 99 130 123 82Z" fill="url(#steel)"/>
+    <path d="M123 84 169 106 205 87 238 105 211 122 183 118 161 143 133 136 116 160 95 149 99 124Z" fill="#10151e"/>
+    <path d="M171 140 190 180 220 193 206 220 183 205 164 222 145 205 151 180Z" fill="#111820"/>
+    <path d="M172 150 181 176 198 189 187 207 174 195 163 207 153 190 165 176Z" fill="#ff8b21"/>
+    <path d="M44 250 324 250 290 278 77 278Z" fill="url(#blue)"/>
+    <path d="M75 278 291 278 268 309 105 309Z" fill="#263345" stroke="#53657a" stroke-width="4"/>
+    <path d="M133 309 233 309 258 336 108 336Z" fill="#1c2633"/>
+    <path d="M172 150 181 176 198 189 187 207 174 195 163 207 153 190 165 176Z" fill="#ff8b21"/>
+  </g>
+  <g font-family="Inter,Segoe UI,Arial,sans-serif" font-weight="800" letter-spacing="-3">
+    <text x="475" y="194" font-size="94" fill="#e7edf5">Carson</text>
+    <text x="475" y="294" font-size="94" fill="url(#blue)">Forge</text>
+  </g>
+  <path d="M482 324H1090" stroke="#344254" stroke-width="3"/>
+  <text x="484" y="365" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="25" letter-spacing="5" fill="#a8b6c8">BUILT FROM SOURCE</text>
+</svg>
