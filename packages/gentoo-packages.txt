@@ -1,0 +1,21 @@
+# Initial CarsonForge Gentoo package set.
+# One atom per line; comments and blank lines are ignored.
+app-admin/porg
+app-admin/sudo
+app-misc/ca-certificates
+app-misc/mime-types
+net-misc/networkmanager
+net-misc/dhcpcd
+sys-apps/dbus
+sys-apps/systemd
+sys-boot/grub
+sys-fs/squashfs-tools
+sys-kernel/gentoo-kernel-bin
+sys-kernel/linux-firmware
+sys-process/cron
+x11-base/xorg-server
+x11-misc/lightdm
+x11-misc/lightdm-gtk-greeter
+xfce-base/xfce4-meta
+xfce-extra/xfce4-terminal
+xfce-extra/xfce4-whiskermenu-plugin
