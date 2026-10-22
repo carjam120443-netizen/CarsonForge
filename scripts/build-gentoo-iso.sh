@@ -35,7 +35,7 @@ echo "Verified stage3: $STAGE3_REL"
 echo '::endgroup::'
 
 echo '::group::Configure isolated Gentoo root'
-mkdir -p "$ROOTFS/etc/portage/package.use" "$ROOTFS/etc/NetworkManager/conf.d" "$ROOTFS/etc/skel" "$ROOTFS/var/log"
+mkdir -p "$ROOTFS/etc/portage/package.use" "$ROOTFS/etc/NetworkManager/conf.d" "$ROOTFS/etc/lightdm/lightdm.conf.d" "$ROOTFS/etc/skel" "$ROOTFS/var/log"
 install -m 0644 "$ROOT_DIR/config/portage/make.conf" "$ROOTFS/etc/portage/make.conf"
 install -m 0644 "$ROOT_DIR/rootfs/etc/portage/package.use/carsonforge" "$ROOTFS/etc/portage/package.use/carsonforge"
 cp -L /etc/resolv.conf "$ROOTFS/etc/resolv.conf"
@@ -55,7 +55,7 @@ echo '::endgroup::'
 echo '::group::Install Gentoo desktop through Portage'
 cp "$PACKAGES_FILE" "$ROOTFS/tmp/carsonforge-packages.txt"
 MAKE_JOBS="$(nproc)"
-chroot "$ROOTFS" /bin/bash -euxc "source /etc/profile; export MAKEOPTS='-j${MAKE_JOBS}'; export EMERGE_DEFAULT_OPTS='--jobs=2 --load-average=2 --with-bdeps=y --getbinpkg'; emerge --sync; emerge --ask=n --verbose --update --deep --newuse @world; mapfile -t packages < <(grep -Ev '^[[:space:]]*(#|$)' /tmp/carsonforge-packages.txt); emerge --ask=n --verbose --getbinpkg=y \"\${packages[@]}\"; emerge --ask=n app-admin/porg; emerge --ask=n sys-kernel/dracut; systemctl enable NetworkManager; systemctl enable lightdm; systemctl set-default graphical.target; useradd --create-home --shell /bin/bash --groups wheel,audio,video carsonforge || true; echo 'carsonforge:carsonforge' | chpasswd; printf 'carsonforge ALL=(ALL:ALL) ALL\\n' > /etc/sudoers.d/10-carsonforge; chmod 0440 /etc/sudoers.d/10-carsonforge; emerge --info > /var/log/carsonforge-emerge-info.txt"
+chroot "$ROOTFS" /bin/bash -euxc "source /etc/profile; export MAKEOPTS='-j${MAKE_JOBS}'; export EMERGE_DEFAULT_OPTS='--jobs=2 --load-average=2 --with-bdeps=y --getbinpkg'; emerge --sync; emerge --ask=n --verbose --update --deep --newuse @world; mapfile -t packages < <(grep -Ev '^[[:space:]]*(#|$)' /tmp/carsonforge-packages.txt); emerge --ask=n --verbose --getbinpkg=y \"\${packages[@]}\"; emerge --ask=n app-admin/porg; emerge --ask=n sys-kernel/dracut; systemctl enable NetworkManager; systemctl enable lightdm; systemctl set-default graphical.target; useradd --create-home --shell /bin/bash --groups wheel,audio,video carsonforge || true; passwd -l carsonforge; printf '[Seat:*]\\nautologin-user=carsonforge\\nautologin-session=xfce\\n' > /etc/lightdm/lightdm.conf.d/50-carsonforge-autologin.conf; emerge --info > /var/log/carsonforge-emerge-info.txt"
 echo '::endgroup::'
 
 echo '::group::Assemble experimental live ISO'
