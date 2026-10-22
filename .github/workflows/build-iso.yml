@@ -1,0 +1,100 @@
+name: Build CarsonForge base ISO
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/build-iso.yml"
+      - "scripts/build-base-iso.sh"
+      - "config/grub.cfg"
+      - "rootfs/**"
+  pull_request:
+    paths:
+      - ".github/workflows/build-iso.yml"
+      - "scripts/build-base-iso.sh"
+      - "config/grub.cfg"
+      - "rootfs/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-base-iso:
+    name: Build bootable base ISO
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install ISO build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes busybox-static cpio grub-common grub-pc-bin xorriso mtools
+
+      - name: Prepare a minimal bootable CarsonForge initramfs
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p build/boot build/rootfs/etc
+          cp rootfs/etc/os-release build/rootfs/etc/os-release
+
+          # Use the hosted runner's installed kernel. This produces a real bootable
+          # developer-preview ISO, not yet a full LFS-built CarsonForge distribution.
+          kernel="$(find /boot -maxdepth 1 -type f -name 'vmlinuz-*' | sort -V | tail -n 1)"
+          if [[ -z "$kernel" ]]; then
+            echo "::error::No installed kernel image found under /boot."
+            exit 1
+          fi
+          install -m 0644 "$kernel" build/boot/vmlinuz
+          echo "Using kernel: $kernel"
+
+          initrd_root="$PWD/build/initramfs-root"
+          mkdir -p "$initrd_root"/{bin,dev,proc,sys,etc,tmp}
+          chmod 1777 "$initrd_root/tmp"
+          install -m 0755 /bin/busybox "$initrd_root/bin/busybox"
+          for applet in sh mount mkdir cat echo uname dmesg ls pwd clear; do
+            ln -sf busybox "$initrd_root/bin/$applet"
+          done
+
+          cat > "$initrd_root/init" <<'INIT'
+          #!/bin/sh
+          export PATH=/bin
+          mount -t devtmpfs devtmpfs /dev 2>/dev/null || true
+          mount -t proc proc /proc
+          mount -t sysfs sysfs /sys
+          mount -t devpts devpts /dev/pts 2>/dev/null || true
+          echo
+          echo "  CarsonForge Linux — base developer preview"
+          echo "  Kernel: $(uname -r)"
+          echo
+          echo "This ISO boots a minimal BusyBox shell."
+          echo "It is not yet the complete LFS-built CarsonForge userspace."
+          echo
+          exec /bin/sh
+          INIT
+          chmod 0755 "$initrd_root/init"
+          printf '%s\n' 'NAME="CarsonForge"' 'ID=carsonforge' > "$initrd_root/etc/os-release"
+
+          (cd "$initrd_root" && find . -print0 | cpio --null -ov --format=newc 2>/dev/null | gzip -9) > build/boot/initramfs.img
+          test -s build/boot/vmlinuz
+          test -s build/boot/initramfs.img
+
+      - name: Build ISO
+        run: |
+          chmod +x scripts/build-base-iso.sh
+          scripts/build-base-iso.sh
+
+      - name: Verify ISO output
+        run: |
+          test -s out/carsonforge-base-x86_64.iso
+          file out/carsonforge-base-x86_64.iso
+          ls -lh out/carsonforge-base-x86_64.iso
+
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: carsonforge-base-x86_64-iso
+          path: out/carsonforge-base-x86_64.iso
+          if-no-files-found: error
+          retention-days: 14
