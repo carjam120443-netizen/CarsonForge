@@ -46,7 +46,7 @@ jobs:
             echo "::error::No installed kernel image found under /boot."
             exit 1
           fi
-          install -m 0644 "$kernel" build/boot/vmlinuz
+          sudo install -m 0644 "$kernel" build/boot/vmlinuz
           echo "Using kernel: $kernel"
 
           initrd_root="$PWD/build/initramfs-root"
