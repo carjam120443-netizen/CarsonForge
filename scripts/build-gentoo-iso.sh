@@ -21,7 +21,7 @@ trap cleanup EXIT
 
 echo '::group::Download and verify Gentoo stage3'
 curl --fail --location --retry 3 "$STAGE3_BASE/latest-stage3-amd64-systemd.txt" -o "$WORK_DIR/stage3.txt"
-STAGE3_REL="$(awk '!/^#/ && /stage3-amd64-systemd-.*\.tar\.xz$/ {print $1; exit}' "$WORK_DIR/stage3.txt")"
+STAGE3_REL="$(awk '$1 ~ /^stage3-amd64-systemd-.*[.]tar[.]xz$/ {print $1; exit}' "$WORK_DIR/stage3.txt")"
 [[ -n "$STAGE3_REL" ]] || die 'Could not find a systemd stage3 in latest-stage3-amd64-systemd.txt'
 STAGE3_URL="$STAGE3_BASE/$STAGE3_REL"
 curl --fail --location --retry 3 "$STAGE3_URL" -o "$WORK_DIR/stage3.tar.xz"
@@ -76,7 +76,7 @@ menuentry 'CarsonForge Gentoo XFCE (experimental)' {
 }
 GRUB
 ISO="$OUT_DIR/carsonforge-gentoo-x86_64.iso"
-grub-mkrescue -V CARSONFORGE -o "$ISO" "$ISO_ROOT"
+grub-mkrescue -o "$ISO" "$ISO_ROOT" -- -volid CARSONFORGE
 [[ -s "$ISO" ]] || die 'ISO output is missing or empty.'
 sha256sum "$ISO" | tee "$ISO.sha256"
 file "$ISO"; ls -lh "$ISO"
