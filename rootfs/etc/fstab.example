@@ -1,0 +1,5 @@
+# Example only. Copy to /etc/fstab and adjust UUIDs/filesystems for the target machine.
+# <source>                 <mount point>  <type>  <options>        <dump> <pass>
+# UUID=ROOT-FILESYSTEM-UUID /              ext4    defaults         1      1
+# UUID=EFI-SYSTEM-UUID      /boot/efi      vfat    umask=0077       0      2
+# tmpfs                     /tmp           tmpfs   mode=1777,nosuid 0      0
