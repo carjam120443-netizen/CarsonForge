@@ -14,7 +14,7 @@ Acceptance checks:
 - [ ] DNS resolution and outbound connectivity work after reboot.
 - [ ] Networking is tested in a clean VM; host networking is not mistaken for target networking.
 
-Do not copy the GitHub Actions runner's network configuration into the target root. Hardware firmware and wireless support depend on the chosen adapter. Once NetworkManager and its matching BLFS dependencies have been built and installed in an assembled target root, run `sudo scripts/enable-networking.sh /path/to/target-root` from the repository. The helper refuses to proceed unless the NetworkManager systemd unit is present; it enables the service and creates a minimal keyfile-plugin configuration only when one does not already exist. It does not download or build NetworkManager.
+Do not copy the GitHub Actions runner's network configuration into the target root. Hardware firmware and wireless support depend on the chosen adapter. Once NetworkManager and its matching BLFS dependencies have been built and installed in an assembled target root, run `sudo bash scripts/enable-networking.sh /path/to/target-root` from the repository. The helper refuses to proceed unless the NetworkManager systemd unit is present; it enables the service and creates a minimal keyfile-plugin configuration only when one does not already exist. It does not download or build NetworkManager.
 
 ## XFCE desktop (BLFS target)
 
@@ -35,7 +35,7 @@ XFCE is not a package that can simply be copied into the current BusyBox initram
 
 [Porg](https://porg.sourceforge.net/) records files installed by source builds and can help inventory/uninstall those packages. The upstream SourceForge listing currently offers **porg 0.10**; it is an older release, so test it against CarsonForge's selected compiler and libc before relying on it.
 
-Build and install Porg inside CarsonForge's LFS build/chroot environment, not on the Ubuntu Actions runner. Download the source archive from the upstream project and verify its checksum/signature when upstream provides one. Extract it, inspect its configure options, then run `sudo scripts/build-porg.sh /path/to/extracted-porg-source` from within the target build environment (or copy the script into that environment). The helper configures, builds, installs, and creates `/var/lib/porg`; because Porg cannot track its own first installation, test logging on a disposable package before using it for system components. This helper has not yet been run against the target's chosen compiler/libc.
+Build and install Porg inside CarsonForge's LFS build/chroot environment, not on the Ubuntu Actions runner. Download the source archive from the upstream project and verify its checksum/signature when upstream provides one. Extract it, inspect its configure options, then run `sudo bash scripts/build-porg.sh /path/to/extracted-porg-source` from within the target build environment (or copy the script into that environment). The helper configures, builds, installs, and creates `/var/lib/porg`; because Porg cannot track its own first installation, test logging on a disposable package before using it for system components. This helper has not yet been run against the target's chosen compiler/libc.
 
 Example usage after Porg is built and configured in the target:
 ```sh
