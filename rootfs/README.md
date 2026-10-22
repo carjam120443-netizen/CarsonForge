@@ -1,5 +1,24 @@
-# Root filesystem overlay
+# CarsonForge base root filesystem
 
-This directory is reserved for small, project-owned files that will be layered onto a completed LFS root filesystem. It is not a built root filesystem and should not contain generated system files, credentials, or machine-specific disk configuration.
+This directory contains project-owned configuration seeds to install into a dedicated
+CarsonForge target root during the Linux From Scratch build. It is not a complete Linux
+userspace and must never be copied over a live host's `/`.
 
-Add overlay files only when the build stage that installs them is documented and tested.
+Current files:
+- `etc/os-release` — OS identity and project metadata
+- `etc/hostname` — default hostname
+- `etc/issue` and `etc/motd` — console/login text
+- `etc/fstab.example` — example mount table; intentionally not an active `fstab`
+
+## What is still needed for a working ISO?
+
+A compatible kernel and an initramfs containing a working `/init`, required programs,
+libraries, and the boot model's root-filesystem setup. The ISO packaging script only
+packages those existing artifacts; it does not compile the kernel or build LFS packages.
+
+Expected build inputs:
+- `build/rootfs/etc/os-release`
+- `build/boot/vmlinuz`
+- `build/boot/initramfs.img`
+
+See [the build guide](../docs/BUILDING.md).
