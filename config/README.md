@@ -1,5 +1,5 @@
 # Configuration overlays
 
-This directory is reserved for CarsonForge-owned configuration templates, such as future /etc/os-release, hostname, and MOTD defaults.
+This directory holds CarsonForge-owned configuration templates, such as future `os-release`, hostname, live-session, and desktop defaults.
 
-Do not place secrets, machine-specific device paths, generated credentials, or a full copied root filesystem here. Templates should be applied only by a reviewed build/install stage after the LFS base is verified.
+Templates should be applied by a reviewed build stage to the isolated Gentoo target root. Do not place secrets, machine-specific device paths, generated credentials, or a copied full root filesystem here. Keep upstream Gentoo configuration and CarsonForge-specific defaults clearly distinguished.
